@@ -68,6 +68,26 @@ def handle_hello(user_id):
 
     return jsonify(response_body), 200
 
+# ADDING NEW USERS WITH POST MEHTOD
+@app.route('/user', methods=['POST'])
+def post_user():
+    body = request.get_json(silent = True)
+    if body is None:
+        raise APIException("Must give user's information (in body)", status_code=400)
+    if "email" not in body:
+        raise APIException("Email address is rquired", status_code=400)
+    if "password" not in body:
+        raise APIException("Must set a password", status_code=400)
+    new_user = User(email = body['email'], password = body['password'], is_active = True)
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({"msg": "Completed", "new_user_info": new_user.serialize()})
+    
+    
+        
+
+
+
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
