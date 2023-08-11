@@ -9,9 +9,9 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return f"User with email {self.email} and id {self.id}" # Shows msg with the user email and id
 
-    def serialize(self):
+    def serialize(self): # how info will be returned as dictionaries
         return {
             "id": self.id,
             "email": self.email,

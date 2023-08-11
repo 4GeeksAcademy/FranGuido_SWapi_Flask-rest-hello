@@ -36,11 +36,34 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/user', methods=['GET'])
-def handle_hello():
+@app.route('/user/<int:user_id>', methods=['GET'])
+def handle_hello(user_id):
+    # Getting all users
+    users = User.query.all() #Retrieve all users
+    single_user = User.query.get(user_id) # Retrieve single user
+    filter_users = User.query.filter_by(is_active = True)
+    # print(type(filter_users))
+    # print(filter_users)
+    filter_users_serialized = list(map(lambda x : x.serialize(), filter_users))
+    print(filter_users_serialized)
 
+    
+    # Return single-user to front-end
+    if single_user is None:
+        #return jsonify({"msg": f"User with ID {user_id} not found."}), 400
+        #APIException also returns msg and bad request code
+        raise APIException(f"User with ID {user_id} not found.", status_code=400) 
+
+    #print(single_user)
+    users_serialized = list(map(lambda x : x.serialize(), users))
+    #print(users_serialized)
+    #print(users)
+    # Pass user id as parameter and show it in message
     response_body = {
-        "msg": "Hello, this is your GET /user response "
+        "msg": "Hello, this is your GET /user response ",
+        "users": users_serialized,
+        "user_id": user_id,
+        "user_info": single_user.serialize() #serialize user info as json format
     }
 
     return jsonify(response_body), 200
