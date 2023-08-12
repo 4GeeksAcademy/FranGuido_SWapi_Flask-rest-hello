@@ -82,6 +82,9 @@ def post_user():
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"msg": "Completed", "new_user_info": new_user.serialize()})
+
+
+
     
     
         
