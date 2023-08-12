@@ -103,8 +103,20 @@ def get_single_planet(planets_id):
     
     return jsonify(response_body)
     
-
-
+# ADDING NEW PLANETS WITH METHOD PUT
+@app.route('/planets', methods=['PUT'])
+def modify_planet():
+    body = request.get_json(silent = True)
+    if body is None:
+        raise APIException("Planet info is required", status_code=400)
+    if "id" not in body:
+        raise APIException("An ID must be given", status_code=400)
+    if "name" not in body:
+        raise APIException("A name must be given", status_code=400)
+    single_planet = Planets.query.get(body['id'])
+    single_planet.name = body['name']
+    db.session.commit()
+    return jsonify({"msg": "Completed"})
     
     
         
