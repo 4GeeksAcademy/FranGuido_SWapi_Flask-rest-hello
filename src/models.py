@@ -24,12 +24,12 @@ class Planets(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), unique=True, nullable=False)
 
-# Print planet info
-def __repr__(self):
-    return f"Planet {self.name} with ID {self.id}"
+    # Print planet info
+    def __repr__(self):
+        return f"Planet {self.name} with ID {self.id}"
 
-def serialize(self):
-    return {
-        "id" : self.id,
-        "name" : self.name
-    }
+    def serialize(self):
+        return {
+            "id" : self.id,
+            "name" : self.name
+        }

@@ -56,7 +56,7 @@ def handle_hello(user_id):
         raise APIException(f"User with ID {user_id} not found.", status_code=400) 
 
     #print(single_user)
-    users_serialized = list(map(lambda x : x.serialize(), users))
+    users_serialized = list(map(lambda x: x.serialize(), users))
     #print(users_serialized)
     #print(users)
     # Pass user id as parameter and show it in message
@@ -89,8 +89,22 @@ def post_user():
 @app.route('/planets', methods=['GET'])
 def get_planets():
     planets = Planets.query.all()
-    planets_serialized = list(map(lambda x: x.serialize(), planets))
+    planets_serialized = list(map(lambda x: x.serialize(),planets))
     return jsonify({"msg": 'Completed', "planets": planets_serialized})
+
+# GET ONE SINGLE PLANET
+@app.route('/planets/<int:planets_id>', methods=['GET'])
+def get_single_planet(planets_id):
+    single_planet = Planets.query.get(planets_id)
+    response_body = {
+        "planets_id" : planets_id,
+        "planets_info": single_planet.serialize()
+    }
+    
+    return jsonify(response_body)
+    
+
+
     
     
         
