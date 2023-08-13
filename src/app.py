@@ -130,6 +130,11 @@ def delete_planet(planets_id):
     return jsonify({"msg": "Completed"})
 
 #GET ALL CHARACTERS
+@app.route('/characters', methods=['GET'])
+def get_characters():
+    characters = Characters.query.all()
+    characters_serialized = list(map(lambda x: x.serialize(), characters))
+    return jsonify({"msg": 'Completed', "characters": characters_serialized})
 
 
 
