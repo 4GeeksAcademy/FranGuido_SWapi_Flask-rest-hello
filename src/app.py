@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Planets
+from models import db, User, Planets, Characters
 #from models import Person
 
 app = Flask(__name__)
@@ -129,6 +129,7 @@ def delete_planet(planets_id):
     db.session.commit()
     return jsonify({"msg": "Completed"})
 
+#GET ALL CHARACTERS
 
 
 

@@ -18,7 +18,7 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
     
- # StarWars Planets table   
+# StarWars Planets table   
 class Planets(db.Model):
     __tablename__ = 'planets'
     id = db.Column(db.Integer, primary_key=True)
@@ -32,4 +32,20 @@ class Planets(db.Model):
         return {
             "id" : self.id,
             "name" : self.name
+        }
+    
+# Star Wars Characters table
+class Characters(db.Model):
+    __tablename__ = 'characters'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), unique=True, nullable=False)
+
+    #Print characters info
+    def __repr__(self):
+        return f"Character {self.name} with ID {self.id}"
+    
+    def serialize(self):
+        return {
+            "id" : self.id,
+            "name": self.name
         }
