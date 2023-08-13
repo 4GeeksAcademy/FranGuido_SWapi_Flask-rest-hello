@@ -92,7 +92,7 @@ def get_planets():
     planets_serialized = list(map(lambda x: x.serialize(),planets))
     return jsonify({"msg": 'Completed', "planets": planets_serialized})
 
-# GET ONE SINGLE PLANET
+# GET SINGLE PLANET
 @app.route('/planets/<int:planets_id>', methods=['GET'])
 def get_single_planet(planets_id):
     single_planet = Planets.query.get(planets_id)
@@ -135,6 +135,20 @@ def get_characters():
     characters = Characters.query.all()
     characters_serialized = list(map(lambda x: x.serialize(), characters))
     return jsonify({"msg": 'Completed', "characters": characters_serialized})
+
+# GET SINGLE CHARACTER
+@app.route('/characters/<int:characters_id>', methods=['GET'])
+def get_single_character(characters_id):
+    single_character = Characters.query.get(characters_id)
+    response_body = {
+        "characters_id" : characters_id,
+        "characters_info": single_character.serialize()
+    }
+    
+    return jsonify(response_body)
+
+
+
 
 
 
