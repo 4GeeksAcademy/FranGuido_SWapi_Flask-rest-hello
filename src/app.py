@@ -119,7 +119,16 @@ def modify_planet():
     return jsonify({"msg": "Completed"})
     
     
-        
+# DELETING PLANET (BY ID) WITH DELETE METHOD
+@app.route('/planets/<int:planets_id>', methods=['DELETE'])
+def delete_planet(planets_id):
+    single_planet = Planets.query.get(planets_id) # Checks if planets id exists
+    if single_planet is None:
+        raise APIException("That planet does not exists!", status_code=400)
+    db.session.delete(single_planet)
+    db.session.commit()
+    return jsonify({"msg": "Completed"})
+
 
 
 
