@@ -37,18 +37,21 @@ def sitemap():
     return generate_sitemap(app)
 
 # GET ALL USERS
+@app.route('/user', methods=['GET'])
+def get_users():
+    filter_users = User.query.filter_by(is_active = True)
+    # print(type(filter_users))
+    # print(filter_users)
+    filter_users_serialized = list(map(lambda x : x.serialize(), filter_users))
+    return jsonify({"msg": 'Completed', "all users": filter_users_serialized})
+
+
+# GET USER BY ID
 @app.route('/user/<int:user_id>', methods=['GET'])
 def handle_hello(user_id):
     # Getting all users
     users = User.query.all() #Retrieve all users
     single_user = User.query.get(user_id) # Retrieve single user
-    filter_users = User.query.filter_by(is_active = True)
-    # print(type(filter_users))
-    # print(filter_users)
-    filter_users_serialized = list(map(lambda x : x.serialize(), filter_users))
-    print(filter_users_serialized)
-
-    
     # Return single-user to front-end
     if single_user is None:
         #return jsonify({"msg": f"User with ID {user_id} not found."}), 400
@@ -147,8 +150,30 @@ def get_single_character(characters_id):
     
     return jsonify(response_body)
 
+# ADDING NEW CHARACTER WITH METHOD PUT
+@app.route('/characters', methods=['PUT'])
+def modify_character():
+    body = request.get_json(silent = True)
+    if body is None:
+        raise APIException("Character info is required", status_code=400)
+    if "id" not in body:
+        raise APIException("An ID must be given", status_code=400)
+    if "name" not in body:
+        raise APIException("A name must be given", status_code=400)
+    single_character = Characters.query.get(body['id'])
+    single_character.name = body['name']
+    db.session.commit()
+    return jsonify({"msg": "Completed"})
 
-
+# DELETING CHARACTER WITH METHOD DELETE
+@app.route('/planets/<int:characters_id>', methods=['DELETE'])
+def delete_character(characters_id):
+    single_character = Characters.query.get(characters_id) # Checks if planets id exists
+    if single_character is None:
+        raise APIException("That planet does not exists!", status_code=400)
+    db.session.delete(single_character)
+    db.session.commit()
+    return jsonify({"msg": "Completed"})
 
 
 
