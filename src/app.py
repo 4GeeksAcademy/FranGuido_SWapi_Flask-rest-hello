@@ -233,24 +233,13 @@ def delete_character(characters_id):
     return jsonify({"msg": "Completed"})
 
 # CATEGORITES FOR FAVORITE LIST (PLANETS & CHARACTERS)
-@app.route('/category', methods=['GET', 'POST'])
+@app.route('/category', methods=['GET'])
 def handle_category():
     if request.method == 'GET':
         category = Category.query.all()
         return jsonify([x.serialize() for x in category]), 200
 
  
-    if request.method == 'POST':
-        body = json.loads(request.data)
-        category = Category(category_name=body['category_name'])
-        db.session.add(category)
-        db.session.commit()
-
-        return jsonify({"msg": f"Category {category.category_name} added with id {category.id}"}), 200
-
-    return jsonify({"msg": "Request not valid"}), 400
-
-
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
