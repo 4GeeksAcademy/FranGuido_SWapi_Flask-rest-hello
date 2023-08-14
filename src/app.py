@@ -232,26 +232,23 @@ def delete_character(characters_id):
     db.session.commit()
     return jsonify({"msg": "Completed"})
 
-
-
-################
+# CATEGORITES FOR FAVORITE LIST (PLANETS & CHARACTERS)
 @app.route('/category', methods=['GET', 'POST'])
-def handle_category(category):
+def handle_category():
     if request.method == 'GET':
-        categories = Category.query.all()
-        return jsonify([x.serialize() for x in categories]), 200
+        category = Category.query.all()
+        return jsonify([x.serialize() for x in category]), 200
 
+ 
     if request.method == 'POST':
         body = json.loads(request.data)
         category = Category(category_name=body['category_name'])
         db.session.add(category)
-
         db.session.commit()
 
         return jsonify({"msg": f"Category {category.category_name} added with id {category.id}"}), 200
 
     return jsonify({"msg": "Request not valid"}), 400
-
 
 
 
